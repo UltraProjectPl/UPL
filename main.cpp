@@ -1,14 +1,21 @@
 #include <iostream>
-#include <string>
 #include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 std::string loadFile(const std::string &fileName);
+std::vector<std::string> splitTextByChar(const std::string& text, char delimiter);
 
 int main() {
     std::string fileSrc = "/home/ultra/Projects/UPL/ExampleApp/index.upl";
     auto fileContent = loadFile(fileSrc);
 
-    std::cout << fileContent << std::endl;
+    auto lines = splitTextByChar(fileContent, ';');
+
+    for (auto &line : lines) {
+        std::cout << line << std::endl;
+    }
 }
 
 std::string loadFile(const std::string &fileName) {
@@ -25,3 +32,15 @@ std::string loadFile(const std::string &fileName) {
 
     return fileContent;
 };
+
+std::vector<std::string> splitTextByChar(const std::string& text, char delimiter) {
+    std::vector<std::string> tokens;
+    std::string token;
+
+    std::istringstream tokenStream(text);
+    while (std::getline(tokenStream, token, delimiter)) {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
